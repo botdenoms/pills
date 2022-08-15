@@ -71,12 +71,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         ),
                         onPressed: () {
                           // to the cart screen
-                          Navigator.of(context).push(
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  const CartScreen(),
-                            ),
-                          );
+                          Navigator.of(context).push(slideFrmRight());
                         },
                       ),
                     ],
@@ -213,6 +208,23 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ],
       ),
       backgroundColor: const Color(0xFF006FAF),
+    );
+  }
+
+  PageRouteBuilder slideFrmRight() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          const CartScreen(),
+      transitionDuration: const Duration(milliseconds: 300),
+      transitionsBuilder: (context, animation, anotherAnimation, child) {
+        return SlideTransition(
+          position: Tween(
+            begin: const Offset(1.0, 0.0),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
     );
   }
 }
