@@ -12,6 +12,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int tabIndex = 0;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             onPressed: () {
               // to the cart screen
-              Navigator.of(context).push(
-		slideFrmRight()
-                //MaterialPageRoute<void>(
-                 // builder: (BuildContext context) => const CartScreen(),
-                //),
-              );
+              Navigator.of(context).push(slideFrmRight()
+                  //MaterialPageRoute<void>(
+                  // builder: (BuildContext context) => const CartScreen(),
+                  //),
+                  );
             },
           ),
         ],
@@ -112,10 +112,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Expanded(
-              child: ListView.builder(
-                itemBuilder: itemCard,
-                itemCount: categories.length,
-              ),
+              child: loading
+                  ? const Center(
+                      child: CircularProgressIndicator.adaptive(
+                        backgroundColor: Colors.white,
+                      ),
+                    )
+                  : ListView.builder(
+                      itemBuilder: itemCard,
+                      itemCount: products.length,
+                    ),
             )
           ],
         ),
@@ -141,7 +147,17 @@ class _HomeScreenState extends State<HomeScreen> {
         if (tabIndex == index) return;
         setState(() {
           tabIndex = index;
+          loading = true;
         });
+        // simulate data fetching
+        Future.delayed(
+          const Duration(seconds: 3),
+          () {
+            setState(() {
+              loading = false;
+            });
+          },
+        );
       },
     );
   }
@@ -170,7 +186,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Product $index',
+                        products[index].name,
                         style: const TextStyle(
                           fontSize: 17.0,
                           color: Colors.black,
@@ -188,7 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            '\$$index 00.00',
+                            products[index].priceFormat(),
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 15.0,
@@ -224,7 +240,9 @@ class _HomeScreenState extends State<HomeScreen> {
         // to detailed screen
         Navigator.of(context).push(
           MaterialPageRoute<void>(
-            builder: (BuildContext context) => const DetailsScreen(),
+            builder: (BuildContext context) => DetailsScreen(
+              product: products[index],
+            ),
           ),
         );
       },

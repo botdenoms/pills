@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:pills/screens/screens.dart';
 
+import '../models/product.dart';
+
 class DetailsScreen extends StatefulWidget {
-  const DetailsScreen({Key? key}) : super(key: key);
+  const DetailsScreen({Key? key, required this.product}) : super(key: key);
+
+  final Product product;
 
   @override
   State<DetailsScreen> createState() => _DetailsScreenState();
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  int quantity = 1;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,22 +87,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
             ),
           ),
           const SizedBox(height: 10.0),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
-              'Product Name',
-              style: TextStyle(
+              widget.product.name,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 17.0,
               ),
             ),
           ),
           const SizedBox(height: 10.0),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Text(
-              'Product descrition text, the product \ndoes this and that to x and y,\nblah blahkl.',
-              style: TextStyle(
+              widget.product.description,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16.0,
               ),
@@ -115,10 +121,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
               color: const Color(0xFF0FA958),
               borderRadius: BorderRadius.circular(20.0),
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                '\$100.00',
-                style: TextStyle(
+                widget.product.priceFormat(),
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 15.0,
                 ),
@@ -151,12 +157,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                       onTap: () {
                         // modify count
+                        if (quantity == 0) {
+                          return;
+                        }
+                        setState(() {
+                          quantity -= 1;
+                        });
                       },
                     ),
                     const SizedBox(width: 10.0),
-                    const Text(
-                      '1',
-                      style: TextStyle(
+                    Text(
+                      quantity.toString(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15.0,
                       ),
@@ -173,6 +185,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                       onTap: () {
                         // modify count
+                        setState(() {
+                          quantity += 1;
+                        });
                       },
                     ),
                   ],
