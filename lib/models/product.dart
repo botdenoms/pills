@@ -45,6 +45,6 @@ class Product {
   int get itemPrice => price;
 
   String priceFormat() {
-    return "${itemPrice}Ksh";
+    return "$itemPrice Ksh";
   }
 }

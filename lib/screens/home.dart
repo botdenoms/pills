@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:pills/data/db_test.dart';
+import 'package:pills/models/cart.dart';
+import 'package:pills/models/cart_item.dart';
 import 'package:pills/screens/screens.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int tabIndex = 0;
   bool loading = false;
+  final Cart cart = Get.put(Cart());
 
   @override
   Widget build(BuildContext context) {
@@ -228,6 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     onTap: () {
                       // add item to cart
+                      CartItem item = CartItem(product: products[index]);
+                      cart.addToCart(item);
                     },
                   )
                 ],

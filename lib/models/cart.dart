@@ -1,7 +1,8 @@
 import 'cart_item.dart';
+import 'package:get/get.dart';
 
-class Cart {
-  List<CartItem> cartItems = [];
+class Cart extends GetxController {
+  RxList<CartItem> cartItems = <CartItem>[].obs;
 
   int cartTotal() {
     // the cart total cost

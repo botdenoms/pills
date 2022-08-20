@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../models/cart.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -8,6 +11,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  final Cart cart = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +30,8 @@ class _CartScreenState extends State<CartScreen> {
           IconButton(
             onPressed: () {
               //clear cart items
+              cart.clearCart();
+              setState(() {});
             },
             icon: const Icon(Icons.remove_shopping_cart_rounded),
           ),
@@ -46,10 +53,23 @@ class _CartScreenState extends State<CartScreen> {
               ),
             ),
           ),
-          const Expanded(
-            child: Center(
-              child: Text('Cart empty'),
-            ),
+          Expanded(
+            child: cart.cartItems.isEmpty
+                ? const Center(
+                    child: Text(
+                      'Cart empty',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10.0,
+                    ),
+                    itemBuilder: itemInCart,
+                    itemCount: cart.cartItems.length,
+                  ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(
@@ -69,16 +89,16 @@ class _CartScreenState extends State<CartScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
+                  children: [
+                    const Text(
                       'Total',
                       style: TextStyle(
                         fontSize: 15.0,
                       ),
                     ),
                     Text(
-                      '\$ 120.00',
-                      style: TextStyle(
+                      '${cart.cartTotal().toString()} ksh',
+                      style: const TextStyle(
                         fontSize: 18.0,
                         fontWeight: FontWeight.w500,
                       ),
@@ -107,6 +127,107 @@ class _CartScreenState extends State<CartScreen> {
           )
         ],
       ),
+    );
+  }
+
+  Widget itemInCart(BuildContext context, int index) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              height: 70.0,
+              width: 50.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
+            const SizedBox(width: 10.0),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // const SizedBox(height: 10.0),
+                Text(
+                  cart.cartItems[index].product.name,
+                  style: const TextStyle(color: Colors.white),
+                ),
+                Text(
+                  cart.cartItems[index].product.priceFormat(),
+                  style: const TextStyle(color: Colors.black),
+                ),
+              ],
+            ),
+          ],
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const SizedBox(height: 10.0),
+            GestureDetector(
+              child: const Icon(
+                Icons.remove_circle_outline_rounded,
+                color: Colors.redAccent,
+              ),
+              onTap: () {
+                cart.removeItem(index);
+                setState(() {});
+              },
+            ),
+            const SizedBox(height: 10.0),
+            Row(
+              children: [
+                GestureDetector(
+                  child: Container(
+                    height: 28.0,
+                    width: 28.0,
+                    color: Colors.white,
+                    child: const Center(
+                      child: Text('-'),
+                    ),
+                  ),
+                  onTap: () {
+                    // modify count
+                    if (cart.cartItems[index].quantity == 0) {
+                      return;
+                    }
+                    cart.cartItems[index].minusQuantity();
+                    setState(() {});
+                  },
+                ),
+                const SizedBox(width: 10.0),
+                Text(
+                  cart.cartItems[index].quantity.toString(),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 15.0,
+                  ),
+                ),
+                const SizedBox(width: 10.0),
+                GestureDetector(
+                  child: Container(
+                    height: 28.0,
+                    width: 28.0,
+                    color: Colors.white,
+                    child: const Center(
+                      child: Text('+'),
+                    ),
+                  ),
+                  onTap: () {
+                    // modify count
+                    cart.cartItems[index].addQuantity();
+                    setState(() {});
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
