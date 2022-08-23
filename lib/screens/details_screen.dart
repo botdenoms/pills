@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pills/controllers/cart_controller.dart';
 
 import 'package:pills/screens/screens.dart';
 
-import '../models/cart.dart';
 import '../models/cart_item.dart';
 import '../models/product.dart';
 
@@ -19,7 +19,7 @@ class DetailsScreen extends StatefulWidget {
 class _DetailsScreenState extends State<DetailsScreen> {
   int quantity = 1;
 
-  final Cart cart = Get.find();
+  final CartController cart = Get.find();
 
   @override
   Widget build(BuildContext context) {

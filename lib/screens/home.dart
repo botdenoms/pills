@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pills/controllers/order_controller.dart';
+import 'package:pills/controllers/cart_controller.dart';
 
 import 'package:pills/data/db_test.dart';
-import 'package:pills/models/cart.dart';
 import 'package:pills/models/cart_item.dart';
 import 'package:pills/screens/screens.dart';
 
@@ -16,7 +17,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int tabIndex = 0;
   bool loading = false;
-  final Cart cart = Get.put(Cart());
+  // controllers
+  final CartController cart = Get.put(CartController());
+  final OrderController order = Get.put(OrderController());
 
   @override
   Widget build(BuildContext context) {

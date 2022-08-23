@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pills/controllers/cart_controller.dart';
+import 'package:pills/controllers/order_controller.dart';
 
 import '../models/cart.dart';
+import '../models/cart_item.dart';
+import '../models/order.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -11,7 +15,8 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final Cart cart = Get.find();
+  final CartController cart = Get.find();
+  final OrderController orderController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +125,14 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   onTap: () {
                     // do checkout
+                    if (cart.cartItems.isEmpty) {
+                      return;
+                    }
+                    Cart c = Cart(cartItems: cart.cartItems.toList());
+                    Order order = Order(items: c, pickLocation: "near you");
+                    orderController.makeOrder(order);
+                    cart.clearCart();
+                    setState(() {});
                   },
                 )
               ],

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:get/get.dart';
+import 'package:pills/controllers/order_controller.dart';
+
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({Key? key}) : super(key: key);
 
@@ -12,6 +15,8 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   TextEditingController productCon = TextEditingController();
   TextEditingController descriptCon = TextEditingController();
+
+  final OrderController orderController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -92,87 +97,179 @@ class _OptionsScreenState extends State<OptionsScreen> {
 
   Widget requestsTab() {
     return Expanded(
-      child: GestureDetector(
-        child: Column(
-          children: [
-            TextField(
-              controller: productCon,
-              style: const TextStyle(
-                fontSize: 17.0,
-                color: Colors.white,
-              ),
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color(0xFF80B7D7),
-                hintText: 'Product',
-                hintStyle: TextStyle(
-                  color: Color(0xFF006FAF),
-                  fontSize: 18.0,
-                ),
-                enabledBorder: InputBorder.none,
-              ),
+      child: Column(
+        children: [
+          TextField(
+            controller: productCon,
+            style: const TextStyle(
+              fontSize: 17.0,
+              color: Colors.white,
             ),
-            const SizedBox(height: 5.0),
-            TextField(
-              controller: descriptCon,
-              style: const TextStyle(
-                fontSize: 17.0,
-                color: Colors.white,
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Color(0xFF80B7D7),
+              hintText: 'Product',
+              hintStyle: TextStyle(
+                color: Color(0xFF006FAF),
+                fontSize: 18.0,
               ),
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color(0xFF80B7D7),
-                hintText: 'Description...',
-                hintStyle: TextStyle(
-                  color: Color(0xFF006FAF),
-                  fontSize: 18.0,
-                ),
-                enabledBorder: InputBorder.none,
-              ),
+              enabledBorder: InputBorder.none,
             ),
-            const Spacer(),
-            GestureDetector(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10.0),
-                padding: const EdgeInsets.symmetric(vertical: 10.0),
-                width: 100.0,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: const Center(
-                  child: Text(
-                    'Send',
-                    style: TextStyle(
-                      color: Color(0xFF006FAF),
-                    ),
+          ),
+          const SizedBox(height: 5.0),
+          TextField(
+            controller: descriptCon,
+            style: const TextStyle(
+              fontSize: 17.0,
+              color: Colors.white,
+            ),
+            decoration: const InputDecoration(
+              filled: true,
+              fillColor: Color(0xFF80B7D7),
+              hintText: 'Description...',
+              hintStyle: TextStyle(
+                color: Color(0xFF006FAF),
+                fontSize: 18.0,
+              ),
+              enabledBorder: InputBorder.none,
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              width: 100.0,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              child: const Center(
+                child: Text(
+                  'Send',
+                  style: TextStyle(
+                    color: Color(0xFF006FAF),
                   ),
                 ),
               ),
-              onTap: () {
-                // send request logic
-              },
             ),
-          ],
-        ),
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
+            onTap: () {
+              // send request logic
+            },
+          ),
+        ],
       ),
     );
   }
 
   Widget orderTab() {
-    return const Expanded(
-      child: Center(
-        child: Text(
-          'Order disappears after being picked',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 14.0,
-          ),
+    return Expanded(
+      child: orderController.orderItems.isEmpty
+          ? const Center(
+              child: Text(
+                'Order disappears after being picked',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 14.0,
+                ),
+              ),
+            )
+          : ListView.builder(
+              itemBuilder: orderCard,
+              itemCount: orderController.orderItems.length,
+            ),
+    );
+  }
+
+  Widget orderCard(BuildContext context, int index) {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              orderController.orderItems[index].id,
+              style: const TextStyle(
+                color: Colors.white60,
+              ),
+            ),
+            Text(
+              '${orderController.orderItems[index].items.cartTotal()} Ksh',
+              style: const TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ],
         ),
-      ),
+        const SizedBox(height: 5.0),
+        ExpansionTile(
+          title: Text(
+              '${orderController.orderItems[index].items.cartItems.length} items'),
+          iconColor: Colors.white,
+          collapsedIconColor: Colors.white,
+          children: orderController.orderItems[index].items.cartItems.map((e) {
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      e.product.name,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      '${e.quantity} items',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    Text(
+                      e.product.priceFormat(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 5.0),
+              ],
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 5.0),
+        GestureDetector(
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: 10.0,
+              horizontal: 20.0,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Center(
+              child: Row(
+                children: const [
+                  Icon(Icons.place_rounded, color: Color(0xFF006FAF)),
+                  SizedBox(width: 5.0),
+                  Text(
+                    'Pick location',
+                    style: TextStyle(
+                      color: Color(0xFF006FAF),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          onTap: () {
+            // open maps to view location
+          },
+        ),
+        const SizedBox(height: 5.0),
+      ],
     );
   }
 }
