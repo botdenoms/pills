@@ -100,6 +100,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(
                   onPressed: () {
                     // open search delegate
+                    showSearch(
+                      context: context,
+                      delegate: CustomDelegate(),
+                    );
                   },
                   icon: const Icon(
                     Icons.search_rounded,
@@ -287,6 +291,96 @@ class _HomeScreenState extends State<HomeScreen> {
             end: Offset.zero,
           ).animate(animation),
           child: child,
+        );
+      },
+    );
+  }
+}
+
+class CustomDelegate extends SearchDelegate {
+  List<String> searchTerms = ["New", "Nuts", "Mellows", "Pines", "cider"];
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {
+          query = '';
+        },
+        icon: const Icon(
+          Icons.clear_rounded,
+          color: Colors.redAccent,
+        ),
+      )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      onPressed: () {
+        close(context, query);
+      },
+      icon: const Icon(
+        Icons.arrow_back_ios_new_rounded,
+        color: Color(0xFF006FAF),
+      ),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    List<String> match = [];
+    for (String st in searchTerms) {
+      if (st.toLowerCase().contains(query.toLowerCase())) {
+        match.add(st);
+      }
+    }
+    return ListView.builder(
+      itemCount: match.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(match[index]),
+          subtitle: Text(match[index]),
+          leading: Container(
+            height: 28.0,
+            width: 28.0,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueAccent,
+            ),
+          ),
+          onTap: () {
+            //to details page
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> match = [];
+    for (String st in searchTerms) {
+      if (st.toLowerCase().contains(query.toLowerCase())) {
+        match.add(st);
+      }
+    }
+    return ListView.builder(
+      itemCount: match.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(match[index]),
+          leading: Container(
+            height: 28.0,
+            width: 28.0,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blueAccent,
+            ),
+          ),
+          onTap: () {
+            // navigate to details page
+          },
         );
       },
     );

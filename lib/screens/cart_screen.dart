@@ -4,7 +4,6 @@ import 'package:pills/controllers/cart_controller.dart';
 import 'package:pills/controllers/order_controller.dart';
 
 import '../models/cart.dart';
-import '../models/cart_item.dart';
 import '../models/order.dart';
 
 class CartScreen extends StatefulWidget {

@@ -16,6 +16,9 @@ class CartController extends GetxController {
 
   addToCart(CartItem item) {
     // adds an item to cart
+    if (cartItems.any((element) => element.product.name == item.product.name)) {
+      return;
+    }
     cartItems.add(item);
   }
 
