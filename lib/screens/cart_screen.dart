@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pills/controllers/cart_controller.dart';
-import 'package:pills/controllers/order_controller.dart';
+// import 'package:pills/controllers/order_controller.dart';
 
-import '../models/cart.dart';
-import '../models/order.dart';
+import 'package:pills/screens/screens.dart';
+
+// import '../models/cart.dart';
+// import '../models/order.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   final CartController cart = Get.find();
-  final OrderController orderController = Get.find();
+  // final OrderController orderController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -122,15 +124,20 @@ class _CartScreenState extends State<CartScreen> {
                       child: Text('Order'),
                     ),
                   ),
-                  onTap: () {
+                  onTap: () async{
                     // do checkout
                     if (cart.cartItems.isEmpty) {
                       return;
                     }
-                    Cart c = Cart(cartItems: cart.cartItems.toList());
-                    Order order = Order(items: c, pickLocation: "near you");
-                    orderController.makeOrder(order);
-                    cart.clearCart();
+                    await Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => const PayScreen(),
+                      ),
+                    );
+                    // Cart c = Cart(cartItems: cart.cartItems.toList());
+                    // Order order = Order(items: c, pickLocation: "near you");
+                    // orderController.makeOrder(order);
+                    // cart.clearCart();
                     setState(() {});
                   },
                 )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:pills/controllers/order_controller.dart';
+import 'package:pills/screens/screens.dart';
 
 class OptionsScreen extends StatefulWidget {
   const OptionsScreen({Key? key}) : super(key: key);
@@ -204,7 +205,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
         const SizedBox(height: 5.0),
         ExpansionTile(
           title: Text(
-              '${orderController.orderItems[index].items.cartItems.length} items'),
+            '${orderController.orderItems[index].items.cartItems.length} items',
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
           iconColor: Colors.white,
           collapsedIconColor: Colors.white,
           children: orderController.orderItems[index].items.cartItems.map((e) {
@@ -266,6 +271,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
           ),
           onTap: () {
             // open maps to view location
+            Navigator.of(context).push(
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const MapViewScreen(),
+              ),
+            );
           },
         ),
         const SizedBox(height: 5.0),
