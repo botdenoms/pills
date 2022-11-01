@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "146063297976",
+    "project_id": "pills-f30c5",
+    "storage_bucket": "pills-f30c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:146063297976:android:054d2f3820b9429f16d34d",
+        "android_client_info": {
+          "package_name": "com.example.pills"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "146063297976-1eg4lgn40mtv7m347dhllgraab2otf20.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCWZWrCkgQR5oSOtbZn7dO4klliTAA-tt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "146063297976-1eg4lgn40mtv7m347dhllgraab2otf20.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "146063297976-jrgk27p3evckvhthg1nivi56arqnbba4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.pills"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
