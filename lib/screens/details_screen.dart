@@ -30,12 +30,16 @@ class _DetailsScreenState extends State<DetailsScreen> {
           Container(
             height: 300.0,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(8.0),
                 bottomRight: Radius.circular(8.0),
               ),
+	      image: DecorationImage(
+      	     	image: NetworkImage(widget.product.imageUrl),
+      	     	fit: BoxFit.cover,
+    	     ),
             ),
             child: Stack(
               children: [

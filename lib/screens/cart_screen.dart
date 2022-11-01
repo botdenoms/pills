@@ -163,6 +163,10 @@ class _CartScreenState extends State<CartScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8.0),
+	        image: DecorationImage(
+      	     	  image: NetworkImage(cart.cartItems[index].product.imageUrl),
+      	     	  fit: BoxFit.cover,
+    	  	),
               ),
             ),
             const SizedBox(width: 10.0),

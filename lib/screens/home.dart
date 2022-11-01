@@ -208,6 +208,10 @@ class _HomeScreenState extends State<HomeScreen> {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10.0),
+	  image: DecorationImage(
+      	     image: NetworkImage(products[index].imageUrl),
+      	     fit: BoxFit.cover,
+    	  ),
         ),
         child: Stack(
           children: [
