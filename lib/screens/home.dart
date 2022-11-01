@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pills/controllers/order_controller.dart';
 import 'package:pills/controllers/cart_controller.dart';
+import 'package:pills/controllers/products_controller.dart';
 
-import 'package:pills/data/db_test.dart';
+// import 'package:pills/data/db_test.dart';
+import 'package:pills/models/product.dart';
 import 'package:pills/models/cart_item.dart';
 import 'package:pills/screens/screens.dart';
 
@@ -16,10 +18,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int tabIndex = 0;
-  bool loading = false;
+  bool loading = true;
+
+  List<Product> products = [];
+  List<String> categories = [];
   // controllers
   final CartController cart = Get.put(CartController());
   final OrderController order = Get.put(OrderController());
+  final ProductController productsCon = Get.put(ProductController());
+
+  fetchData() async {
+    products = await productsCon.getProducts();
+    categories = productsCon.getCategories();
+    setState(() {
+      loading = false;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -154,21 +174,27 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      onTap: () {
+      onTap: () async {
         if (tabIndex == index) return;
         setState(() {
           tabIndex = index;
           loading = true;
         });
+	if (products.isEmpty) return;
+        // fetchData();
+        products = productsCon.getProductsOn(categories[index]);
+        setState(() {
+          loading = false;
+        });
         // simulate data fetching
-        Future.delayed(
-          const Duration(seconds: 3),
-          () {
-            setState(() {
-              loading = false;
-            });
-          },
-        );
+        // Future.delayed(
+        //   const Duration(seconds: 3),
+        //   () {
+        //     setState(() {
+        //       loading = false;
+        //     });
+        //   },
+        // );
       },
     );
   }

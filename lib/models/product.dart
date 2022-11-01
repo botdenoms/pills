@@ -6,7 +6,7 @@ class Product {
   final int amount;
   final String imageUrl;
   final String? id;
-  int downloads = 0;
+  // int downloads = 0;
 
   Product({
     required this.name,
@@ -25,7 +25,7 @@ class Product {
       category: map['category'],
       price: map['price'],
       amount: map['amount'],
-      imageUrl: map['imageUrl'],
+      imageUrl: map['imageurl'],
       id: map['id'],
     );
   }
